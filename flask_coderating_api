@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+
+import joblib
+from flask import Flask, request
+import numpy as np
+import pandas as pd
+from flasgger import Swagger
+
+model = joblib.load('/Users/amipatil/Meetup-AIML/coderating-recommender.joblib')
+
+app = Flask(__name__)
+swagger = Swagger(app)
+
+@app.route('/predictrating')
+def predict_coderating():
+    """Example endpoint returning a prediction of code rating
+    ---
+    parameters:
+      - name: blocker
+        in: query
+        type: number
+        required: true
+      - name: critical
+        in: query
+        type: number
+        required: true
+      - name: major
+        in: query
+        type: number
+        required: true
+    """
+    blocker = request.args.get("blocker")
+    critical = request.args.get("critical")
+    major = request.args.get("major")
+    
+    prediction = model.predict(np.array([[blocker, critical, major]]))
+    return str(prediction)
+
+@app.route('/predict_file', methods=["POST"])
+def predict_coderating_file():
+    """Example file endpoint returning a prediction of code rating
+    ---
+    parameters:
+      - name: input
+        in: formData
+        type: file
+        required: true
+    """
+    input_data = pd.read_csv(request.files.get("input"),header=None)
+    prediction = model.predict(input_data)
+    return str(list(prediction))
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
