@@ -1,7 +1,7 @@
 # MEETUP-AIML
 
 
-In this example, I have taken a hypothetical scenario of code rating based on the number and type of issues. I have build the model using this sample dataset to predict the code rating based on issue count and type.
+In this example, I have taken a hypothetical scenario of code rating based on the number and type of issues. I have build the model using sample dataset to predict the code rating based on issue count and type.
 
 We will use Jupyter Notebook to
 1. Import the data
